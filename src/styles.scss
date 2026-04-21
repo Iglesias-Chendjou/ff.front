@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #333;
+  background: var(--ff-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(46, 125, 50, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(102, 187, 106, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(27, 94, 32, 0.02) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+// ==========================================
+// Design Tokens - FoodFirst Anti-Gaspi
+// ==========================================
+:root {
+  // Colors
+  --ff-green-900: #1b5e20;
+  --ff-green-700: #2e7d32;
+  --ff-green-500: #4caf50;
+  --ff-green-400: #66bb6a;
+  --ff-green-300: #81c784;
+  --ff-green-100: #c8e6c9;
+  --ff-green-50: #e8f5e9;
+
+  --ff-orange: #ff9800;
+  --ff-orange-light: #fff3e0;
+  --ff-red: #e53935;
+  --ff-red-light: #ffebee;
+  --ff-blue: #1565c0;
+  --ff-blue-light: #e3f2fd;
+
+  --ff-bg: #fafafa;
+  --ff-card: #ffffff;
+  --ff-border: #e0e0e0;
+  --ff-text: #333333;
+  --ff-text-light: #666666;
+  --ff-text-muted: #999999;
+
+  // Spacing
+  --ff-space-xs: 0.25rem;
+  --ff-space-sm: 0.5rem;
+  --ff-space-md: 1rem;
+  --ff-space-lg: 1.5rem;
+  --ff-space-xl: 2rem;
+  --ff-space-2xl: 3rem;
+  --ff-space-3xl: 4rem;
+
+  // Radii
+  --ff-radius: 0.75rem;
+  --ff-radius-lg: 1rem;
+  --ff-radius-xl: 1.25rem;
+  --ff-radius-2xl: 1.5rem;
+  --ff-radius-full: 9999px;
+
+  // Shadows
+  --ff-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --ff-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --ff-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --ff-shadow-lg: 0 8px 32px rgba(46, 125, 50, 0.12);
+  --ff-shadow-xl: 0 12px 48px rgba(46, 125, 50, 0.18);
+
+  // Transitions
+  --ff-transition: all 0.2s ease;
+  --ff-transition-slow: all 0.3s ease;
+}
+
+// ==========================================
+// Animations
+// ==========================================
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// ==========================================
+// Utility Classes
+// ==========================================
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--ff-space-lg);
+}
+
+.container-sm {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--ff-space-lg);
+}
+
+.container-xs {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 var(--ff-space-lg);
+}
+
+.section {
+  padding: var(--ff-space-3xl) 0;
+}
+
+.section-sm {
+  padding: var(--ff-space-2xl) 0;
+}
+
+.card {
+  background: var(--ff-card);
+  border-radius: var(--ff-radius-lg);
+  padding: var(--ff-space-xl);
+  box-shadow: var(--ff-shadow);
+  transition: var(--ff-transition);
+}
+
+.card:hover {
+  box-shadow: var(--ff-shadow-md);
+}
+
+// ==========================================
+// Button System
+// ==========================================
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, var(--ff-green-700), var(--ff-green-900));
+  color: white;
+  border: none;
+  border-radius: var(--ff-radius);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--ff-transition);
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(46, 125, 50, 0.35);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  color: var(--ff-green-700);
+  border: 2px solid var(--ff-green-700);
+  border-radius: var(--ff-radius);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--ff-transition);
+
+  &:hover:not(:disabled) {
+    background: var(--ff-green-50);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--ff-green-700);
+  color: var(--ff-green-700);
+  background: transparent;
+  border-radius: var(--ff-radius);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--ff-transition);
+
+  &:hover:not(:disabled) {
+    background: var(--ff-green-700);
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: var(--ff-red);
+  border: 2px solid var(--ff-red);
+  border-radius: var(--ff-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--ff-transition);
+
+  &:hover:not(:disabled) {
+    background: var(--ff-red-light);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ==========================================
+// Form Styles
+// ==========================================
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ff-text);
+    margin-bottom: 0.4rem;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--ff-border);
+    border-radius: var(--ff-radius);
+    font-size: 0.95rem;
+    transition: var(--ff-transition);
+    box-sizing: border-box;
+    background: white;
+
+    &:focus {
+      outline: none;
+      border-color: var(--ff-green-400);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.15);
+    }
+
+    &:disabled {
+      background: #f5f5f5;
+      color: var(--ff-text-muted);
+    }
+
+    &::placeholder {
+      color: var(--ff-text-muted);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+// ==========================================
+// Scrollbar
+// ==========================================
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ff-green-50);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ff-green-300);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--ff-green-400);
+  }
+}
+
+// ==========================================
+// Selection
+// ==========================================
+::selection {
+  background: var(--ff-green-100);
+  color: var(--ff-green-900);
+}
