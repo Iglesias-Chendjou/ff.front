@@ -4,6 +4,13 @@
 Plateforme Anti-Gaspi Bruxelles — Site web client.
 Interface web permettant aux clients de parcourir le catalogue, commander, suivre les livraisons, gerer abonnements et colis surprise.
 
+Le catalogue agrège 3 sources d'approvisionnement coexistantes (focus n°1 = invendables magasin) :
+1. **Invendables magasin** (`Reason = Unsellable`, focus) — emballage abîmé, alvéole incomplète, surstock, défauts 666
+2. **Invendus DLC J+1 magasin** (`Reason = NearExpiry`)
+3. **Achat en gros producteurs** (`SourceType = ProducerBulk`)
+
+Le front doit afficher des **badges** par produit en fonction de `Reason`/`UnsellableSubReason` (ex. "Emballage abîmé", "Alvéole incomplète", "DLC demain") et **respecter le `DiscountedPrice` renvoyé par l'API** (peut différer de -50% si `DiscountPercentOverride` est défini côté magasin).
+
 ## Stack technique
 - **Framework** : Angular 21
 - **Langage** : TypeScript
@@ -71,7 +78,8 @@ ff.front/
 ## Regles metier cote client
 - **Deadline 17h** : afficher un avertissement si l'heure approche de 17h
 - **Filtrage par zone** : le catalogue est filtre selon la zone de livraison du client
-- **Prix affiches** : toujours montrer le prix original barre et le prix -50%
+- **Prix affiches** : montrer le prix original barré et le prix discounté **issu de l'API** (`AvailableProductDto.DiscountedPrice`), qui peut varier selon `DiscountPercentOverride` du magasin (ne PAS recalculer -50% côté front)
+- **Badges** : afficher un badge par produit selon `Reason` + `UnsellableSubReason` + éventuellement `ReasonNotes` (libellés à traduire dans `i18n/fr.ts`)
 - **Suivi temps reel** : WebSocket SignalR pour la position du livreur
 
 ## Conventions
