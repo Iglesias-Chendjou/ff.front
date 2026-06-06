@@ -8,6 +8,9 @@ export interface ProductCategory {
   isActive: boolean;
 }
 
+export type ListingReason = 'Unsellable' | 'NearExpiry';
+export type UnsellableSubReason = 'DamagedPackaging' | 'IncompletePack' | 'Overstock' | 'PackagingDefect666';
+
 export interface AvailableProduct {
   storeInventoryId: string;
   productTemplateId: string;
@@ -23,6 +26,9 @@ export interface AvailableProduct {
   expirationDate: string;
   storeId: string;
   storeName: string;
+  reason: ListingReason;
+  unsellableSubReason?: UnsellableSubReason;
+  reasonNotes?: string;
 }
 
 export interface ProductTemplate {

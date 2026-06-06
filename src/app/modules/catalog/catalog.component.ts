@@ -6,12 +6,13 @@ import { FR } from '../../i18n/fr';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { LoadingSpinnerWidget } from '../../core/widgets/loading-spinner.widget';
+import { ReasonBadgeWidget } from '../../core/widgets/reason-badge.widget';
 import { AvailableProduct, ProductCategory } from '../../core/model';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoadingSpinnerWidget, RouterLink],
+  imports: [CommonModule, FormsModule, LoadingSpinnerWidget, ReasonBadgeWidget, RouterLink],
   template: `
     <div class="page">
 
@@ -89,6 +90,10 @@ import { AvailableProduct, ProductCategory } from '../../core/model';
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 </button>
 
+                <div class="card-badge-wrap">
+                  <ff-reason-badge [reason]="p.reason" [unsellableSubReason]="p.unsellableSubReason" [reasonNotes]="p.reasonNotes" />
+                </div>
+
                 <div class="card-img">
                   @if (p.imageUrl) {
                     <img [src]="p.imageUrl" [alt]="p.name" loading="lazy" />
@@ -148,6 +153,9 @@ import { AvailableProduct, ProductCategory } from '../../core/model';
                     <button class="heart small" aria-label="Favoris">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     </button>
+                    <div class="card-badge-wrap small">
+                      <ff-reason-badge [reason]="p.reason" [unsellableSubReason]="p.unsellableSubReason" [reasonNotes]="p.reasonNotes" />
+                    </div>
                     <div class="mb-img">
                       @if (p.imageUrl) {
                         <img [src]="p.imageUrl" [alt]="p.name" loading="lazy" />
@@ -183,6 +191,9 @@ import { AvailableProduct, ProductCategory } from '../../core/model';
                   <button class="heart" aria-label="Ajouter aux favoris">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                   </button>
+                  <div class="card-badge-wrap">
+                    <ff-reason-badge [reason]="p.reason" [unsellableSubReason]="p.unsellableSubReason" [reasonNotes]="p.reasonNotes" />
+                  </div>
                   <div class="card-img">
                     @if (p.imageUrl) {
                       <img [src]="p.imageUrl" [alt]="p.name" loading="lazy" />
@@ -405,6 +416,17 @@ import { AvailableProduct, ProductCategory } from '../../core/model';
       flex-direction: column;
       transition: box-shadow 0.15s;
       &:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    }
+
+    .card-badge-wrap {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+    .card-badge-wrap.small {
+      top: 6px;
+      left: 6px;
     }
 
     .heart {

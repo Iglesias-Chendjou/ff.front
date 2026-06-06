@@ -96,4 +96,12 @@ export const FR = {
     success: 'Operation reussie',
     deadline: 'Attention : commandes avant 17h !',
   },
+  reasons: {
+    unsellable: 'Invendable',
+    nearExpiry: 'DLC demain',
+    damagedPackaging: 'Emballage abime',
+    incompletePack: 'Alveole incomplete',
+    overstock: 'Surstock',
+    packagingDefect666: 'Defaut 666',
+  },
 };

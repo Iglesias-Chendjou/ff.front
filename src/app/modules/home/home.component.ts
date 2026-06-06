@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ProductService } from '../../core/services/product.service';
+import { ReasonBadgeWidget } from '../../core/widgets/reason-badge.widget';
 import { AvailableProduct } from '../../core/model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ReasonBadgeWidget],
   template: `
     <div class="home">
 
@@ -94,6 +95,9 @@ import { AvailableProduct } from '../../core/model';
             @for (p of products().slice(0, 4); track p.storeInventoryId) {
               <a routerLink="/catalog" class="w-card">
                 <span class="w-badge">-50%</span>
+                <div class="w-reason">
+                  <ff-reason-badge [reason]="p.reason" [unsellableSubReason]="p.unsellableSubReason" [reasonNotes]="p.reasonNotes" />
+                </div>
                 <div class="w-img">
                   @if (p.imageUrl) {
                     <img [src]="p.imageUrl" [alt]="p.name" loading="lazy" />
@@ -570,6 +574,12 @@ import { AvailableProduct } from '../../core/model';
       padding: 3px 7px;
       border-radius: 3px;
       letter-spacing: 0.03em;
+    }
+    .w-reason {
+      position: absolute;
+      top: 38px;
+      left: 12px;
+      z-index: 2;
     }
     .w-img {
       height: 120px;
