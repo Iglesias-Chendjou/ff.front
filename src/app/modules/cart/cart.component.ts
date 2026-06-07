@@ -4,7 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 import { FR } from '../../i18n/fr';
 import { CartService } from '../../core/services/cart.service';
 import { OrderService } from '../../core/services/order.service';
+import { PaymentService } from '../../core/services/payment.service';
+import { ProfileService } from '../../core/services/profile.service';
 import { LoadingSpinnerWidget } from '../../core/widgets/loading-spinner.widget';
+import { switchMap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -456,6 +460,8 @@ import { LoadingSpinnerWidget } from '../../core/widgets/loading-spinner.widget'
 export class CartComponent {
   cartService = inject(CartService);
   private orderService = inject(OrderService);
+  private paymentService = inject(PaymentService);
+  private profileService = inject(ProfileService);
   private router = inject(Router);
 
   t = FR;
@@ -481,20 +487,43 @@ export class CartComponent {
 
     if (items.length === 0) return;
 
-    const defaultAddressId = localStorage.getItem('ff_default_address') ?? '';
     this.checkingOut.set(true);
     this.error.set('');
 
-    this.orderService.createOrder({
-      deliveryAddressId: defaultAddressId,
-      items,
-    }).subscribe({
+    this.profileService.getAddresses().pipe(
+      switchMap(addresses => {
+        if (addresses.length === 0) {
+          return throwError(() => new Error('Aucune adresse de livraison disponible.'));
+        }
+        const addr = addresses.find(a => a.isDefault) ?? addresses[0];
+        return this.orderService.createOrder({
+          deliveryAddressId: addr.id,
+          items,
+        }).pipe(
+          switchMap((order: any) => {
+            const orderId = order.id ?? order.orderId;
+            return this.paymentService.createIntent(orderId).pipe(
+              switchMap(intent =>
+                this.paymentService.confirmMock(intent.paymentIntentId).pipe(
+                  switchMap(payment => {
+                    if (payment.status !== 'Succeeded') {
+                      return throwError(() => new Error('Echec confirmation paiement.'));
+                    }
+                    return [payment];
+                  }),
+                ),
+              ),
+            );
+          }),
+        );
+      }),
+    ).subscribe({
       next: () => {
         this.cartService.clear();
         this.router.navigate(['/orders']);
       },
-      error: () => {
-        this.error.set(this.t.common.error);
+      error: (e) => {
+        this.error.set(e?.message || this.t.common.error);
         this.checkingOut.set(false);
       },
     });
